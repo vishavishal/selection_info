@@ -4,8 +4,6 @@
 #
 #----------------------------------------------------------------------------------
 
-VG_SELTOOL_ROOT_PATH 	= File.join(File.dirname(__FILE__))
-
 module ComponentInfo
   #Get all the attribute details
   def self.get_attribute_dict_details comp
@@ -218,7 +216,8 @@ module SelectionInfoDialog
       :resizable=>true,
       :style=>UI::HtmlDialog::STYLE_DIALOG
     })
-    $compDialog.set_file(VG_SELTOOL_ROOT_PATH + "/component_info.html")
+    html_file_path = File.join(VG_SELTOOL_ROOT_PATH, "web", "component_info.html")
+    $compDialog.set_file(html_file_path)
     $compDialog.set_size(1000, 500)
     $compDialog.set_position(0,0)
     $compDialog.center
@@ -235,9 +234,8 @@ module SelectionInfoDialog
       $compDialog.execute_script(script_str);
     }
     
-    
     $compDialog.add_action_callback("getTableData") {|dialog, params|
-      puts "CB : getTableData : #{params}"
+      #puts "CB : getTableData : #{params}"
       inputs = JSON.parse(params)
       table_html = ComponentInfo::get_table_data inputs
       script_str = "refreshDictData(\"#{table_html}\")";
