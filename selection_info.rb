@@ -1,3 +1,9 @@
+#----------------------------------------------------------------------------------
+#  CopyRight : Vivek Gnanasekaran
+#  Main module containing the functions for the Component details of the selection
+#
+#----------------------------------------------------------------------------------
+
 VG_SELTOOL_ROOT_PATH 	= File.join(File.dirname(__FILE__))
 
 module ComponentInfo
@@ -12,6 +18,7 @@ module ComponentInfo
     result_h
   end
 
+  #Get the component dimensions
   def self.get_component_info comp
     result_h = {}
     return {} unless comp
@@ -79,7 +86,7 @@ module ComponentInfo
   end
 
   def self.get_table_data inputs
-    puts "get_table_data : #{inputs}"
+    #puts "get_table_data : #{inputs}"
     if Sketchup.active_model.selection.length == 0
       comp = Sketchup.active_model
       comp_details_h = {
@@ -126,14 +133,14 @@ module ComponentInfo
   end
 
   def self.get_active_dict_name
-    puts "get_active_dict_name"
+    #puts "get_active_dict_name"
     script_str = "getActiveMenu()";
     $compDialog.execute_script(script_str);
     $active_menu_item
   end
 
   def self.selection_update comp=nil
-    puts "Selection update : #{comp} : #{Sketchup.active_model.selection.length}"
+    #puts "Selection update : #{comp} : #{Sketchup.active_model.selection.length}"
     if Sketchup.active_model.selection.empty?
       comp = Sketchup.active_model
       comp_details_h = {
@@ -143,7 +150,7 @@ module ComponentInfo
 
       html_str    = ComponentInfo::convert_json_to_html output_json
 
-      puts "Inside ... selupdate"
+      #puts "Inside ... selupdate"
       active_dict_name = get_active_dict_name
       script_str = "refresh(\"#{html_str}\")";
       $compDialog.execute_script(script_str);
@@ -152,7 +159,7 @@ module ComponentInfo
         seln = Sketchup.active_model.selection
         comp = seln.length > 0 ? seln[seln.length-1] : Sketchup.active_model
       end
-      puts "Comp : #{comp}"
+      #puts "Comp : #{comp}"
 
       if comp.is_a?(Sketchup::Model)
         comp_details_h = {

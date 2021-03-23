@@ -1,0 +1,63 @@
+#refresh_button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* The sidebar menu */
+.dict_names {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 200px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+/* The navigation menu links */
+.dict_names a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.dict_names a:hover {
+  color: #f1f1f1;
+}
+
+/* Style page content */
+.dict-content {
+  margin-left: 200px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+.dict-content p{
+    visibility: hidden;
+}
+
+.dict-content p.active {
+    visibility: visible;
+}
+
+.side-menu-item:selected {
+    background: rgb(14, 158, 202);
+}
+.side-menu-item.selected {
+  background: rgb(14, 158, 202);
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .dict_names {padding-top: 15px;}
+  .dict_names a {font-size: 18px;}
+}
