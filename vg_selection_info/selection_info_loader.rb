@@ -181,24 +181,24 @@ end
 
 class MySelectionObserver < Sketchup::SelectionObserver
   def onSelectionBulkChange(selection)
-    puts "onSelectionBulkChange: #{selection}"
+    #puts "onSelectionBulkChange: #{selection}"
     ComponentInfo::selection_update
   end
   def onSelectionAdded(selection, entity)
-    puts "onSelectionAdded: #{entity}"
+    #puts "onSelectionAdded: #{entity}"
     ComponentInfo::selection_update
   end
   def onSelectionRemoved(selection, entity)
-    puts "onSelectionRemoved: #{entity}"
+    #puts "onSelectionRemoved: #{entity}"
   end
   def onSelectionCleared(selection)
-    puts "----------------------------------------------------------------"
-    puts "onSelectionCleared : #{selection.to_a} : #{Sketchup.active_model.selection.to_a}"
+    #puts "----------------------------------------------------------------"
+    #puts "onSelectionCleared : #{selection.to_a} : #{Sketchup.active_model.selection.to_a}"
     if Sketchup.active_model.selection.length == 0
       #ComponentInfo::selection_update
       onSelectionBulkChange(selection)
     end
-    puts "----------------------------------------------------------------"
+    #puts "----------------------------------------------------------------"
   end
 end
 
@@ -224,7 +224,7 @@ module SelectionInfoDialog
     $compDialog.show
     
     $compDialog.add_action_callback("getCompDetails") {|dialog, params|
-      puts "CB : getCompDetails : #{params} : #{Sketchup.active_model.selection[0]}"
+      #puts "CB : getCompDetails : #{params} : #{Sketchup.active_model.selection[0]}"
     
       resp = ComponentInfo::get_comp_details Sketchup.active_model.selection[0]
       output_json = resp.to_json
@@ -244,7 +244,7 @@ module SelectionInfoDialog
     
     $compDialog.add_action_callback("setActiveMenu"){ |dialog, params|
       inputs = JSON.parse(params)
-      puts "Inputs setActiveMenu : #{inputs}"
+      #puts "Inputs setActiveMenu : #{inputs}"
       $active_menu_item = inputs["attr_name"]
       script_str = "setActiveMenuItem(\"#{$active_menu_item}\")";
       $compDialog.execute_script(script_str);
