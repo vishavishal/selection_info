@@ -1,8 +1,12 @@
+#----------------------------------------------------------------------------------
+#  CopyRight : Vivek Gnanasekaran
+#----------------------------------------------------------------------------------
+
 module VG_SITool_V1
   
   module SelectionInfoDialog 
     extend self
-    attr_reader :dialog
+    attr_reader :dialog, :active_menu_item
 
     def open
       @dialog = create_dialog() if @dialog.nil?
@@ -54,9 +58,9 @@ module VG_SITool_V1
       
       @dialog.add_action_callback("setActiveMenu"){ |dialog, params|
         inputs = JSON.parse(params)
-        puts "Inputs setActiveMenu : #{inputs}"
-        $active_menu_item = inputs["attr_name"]
-        script_str = "setActiveMenuItem(\"#{$active_menu_item}\")";
+        #puts "Inputs setActiveMenu : #{inputs}"
+        @active_menu_item = inputs["attr_name"]
+        script_str = "setActiveMenuItem(\"#{@active_menu_item}\")";
         @dialog.execute_script(script_str);
       }    
 

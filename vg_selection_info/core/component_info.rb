@@ -53,7 +53,7 @@ module VG_SITool_V1
     end
 
     def self.get_comp_details comp=nil
-      puts "get_comp_details..#{comp}"
+      #puts "get_comp_details..#{comp}"
       seln = Sketchup.active_model.selection
       if comp
         comp_details_h = {
@@ -133,18 +133,18 @@ module VG_SITool_V1
     end
 
     def self.set_active_dict_name item
-      $active_menu_item = item
+      SelectionInfoDialog.active_menu_item = item
     end
 
     def self.get_active_dict_name
-      puts "get_active_dict_name"
+      #puts "get_active_dict_name"
       script_str = "getActiveMenu()";
       SelectionInfoDialog.dialog.execute_script(script_str);
-      $active_menu_item
+      SelectionInfoDialog.active_menu_item
     end
 
     def self.selection_update comp=nil
-      puts "Selection update : #{$active_menu_item} : #{Sketchup.active_model.selection.length}"
+      #puts "Selection update : #{SelectionInfoDialog.active_menu_item} : #{Sketchup.active_model.selection.length}"
       
       return unless SelectionInfoDialog.dialog
       if Sketchup.active_model.selection.empty?
