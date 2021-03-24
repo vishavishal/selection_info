@@ -8,7 +8,7 @@ core_path 	          = File.join(current_folder, 'vg_selection_info')
 #------------ Set temp Paths here -------------------------------------
 dev_env = false
 if dev_env
-  core_path             = 'E:\Extensions\selection_info\vg_selection_info'
+  #core_path             = 'E:\Extensions\selection_info\vg_selection_info'
 end
 #----------------------------------------------------------------------
 

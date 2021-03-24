@@ -1,33 +1,11 @@
-module SILoader
-  module Lib
-    #Root path
-    RP = File.join(File.dirname(__FILE__))
-    FILE_TYPE_STR = "/*.rb"
-    TEST_MODE = false
-  end
+module VG_SITool_V1
+
+  #--------------- Constants       ----------------------------------------------
+  ROOT_PATH       = File.expand_path('..', __FILE__) unless defined?(ROOT_PATH)
+  FILE_TYPE_STR   = "/*.rb"
+  TEST_MODE       = true
+  #------------------------------------------------------------------------------
   
-  class MySelectionObserver < Sketchup::SelectionObserver
-    def onSelectionBulkChange(selection)
-      #puts "onSelectionBulkChange: #{selection}"
-      ComponentInfo::selection_update
-    end
-    def onSelectionAdded(selection, entity)
-      #puts "onSelectionAdded: #{entity}"
-      ComponentInfo::selection_update
-    end
-    def onSelectionRemoved(selection, entity)
-      #puts "onSelectionRemoved: #{entity}"
-    end
-    def onSelectionCleared(selection)
-      #puts "----------------------------------------------------------------"
-      #puts "onSelectionCleared : #{selection.to_a} : #{Sketchup.active_model.selection.to_a}"
-      if Sketchup.active_model.selection.length == 0
-        #ComponentInfo::selection_update
-        onSelectionBulkChange(selection)
-      end
-      #puts "----------------------------------------------------------------"
-    end
-  end
 
   module Starters
     extend self
@@ -36,8 +14,8 @@ module SILoader
     def load_ruby_files
       ruby_directories = ['core']
       ruby_directories.each do |dir_name|
-        dir_path = File.join(SILoader::Lib::RP, dir_name)
-        files_to_be_loaded = Dir[dir_path+SILoader::Lib::FILE_TYPE_STR]
+        dir_path = File.join(ROOT_PATH, dir_name)
+        files_to_be_loaded = Dir[dir_path+FILE_TYPE_STR]
         files_to_be_loaded.each { |file_name| 
           Sketchup.load File.join(file_name) 
         }
@@ -67,16 +45,11 @@ module SILoader
 
       # Attach observers
       attach_observers
-
-      #Create dialog
-      SelectionInfoDialog::create_dialog
-      SelectionInfoDialog::add_callbacks
     end
     #----------------------------------------------------------------------------------------
 
   end
-
 end
 
 #Load all ruby files
-SILoader::Starters::start_extension
+VG_SITool_V1::Starters::start_extension
