@@ -3,7 +3,7 @@ module SILoader
     #Root path
     RP = File.join(File.dirname(__FILE__))
     FILE_TYPE_STR = "/*.rb"
-    TEST_MODE = true
+    TEST_MODE = false
   end
   
   class MySelectionObserver < Sketchup::SelectionObserver
@@ -67,6 +67,10 @@ module SILoader
 
       # Attach observers
       attach_observers
+
+      #Create dialog
+      SelectionInfoDialog::create_dialog
+      SelectionInfoDialog::add_callbacks
     end
     #----------------------------------------------------------------------------------------
 

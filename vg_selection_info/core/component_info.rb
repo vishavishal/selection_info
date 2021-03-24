@@ -27,9 +27,9 @@ module ComponentInfo
 
       result_h = {"comp_details": {
           "name":       comp.definition.name,
-          "height":     comp_bounds.height,
+          "height":     comp_bounds.depth,
           "width":      comp_bounds.width,
-          "depth":      comp_bounds.depth,
+          "depth":      comp_bounds.height,
           "origin":     comp_trans.origin,
           "layer":      comp.layer.name,
         }
@@ -131,14 +131,14 @@ module ComponentInfo
   end
 
   def self.get_active_dict_name
-    #puts "get_active_dict_name"
+    puts "get_active_dict_name"
     script_str = "getActiveMenu()";
-    sel_info_dialog.execute_script(script_str);
+    $sel_info_dialog.execute_script(script_str);
     $active_menu_item
   end
 
   def self.selection_update comp=nil
-    #puts "Selection update : #{comp} : #{Sketchup.active_model.selection.length}"
+    puts "Selection update : #{$active_menu_item} : #{Sketchup.active_model.selection.length}"
     if Sketchup.active_model.selection.empty?
       comp = Sketchup.active_model
       comp_details_h = {
@@ -150,8 +150,10 @@ module ComponentInfo
 
       #puts "Inside ... selupdate"
       active_dict_name = get_active_dict_name
+      #$dict_to_be_updated = false
+
       script_str = "refresh(\"#{html_str}\")";
-      sel_info_dialog.execute_script(script_str);
+      $sel_info_dialog.execute_script(script_str);
     else
       if comp.nil?
         seln = Sketchup.active_model.selection
@@ -172,30 +174,35 @@ module ComponentInfo
       #puts "Selection update : output_json : #{output_json}"
       html_str    = ComponentInfo::convert_json_to_html output_json
 
-      #active_dict_name = get_active_dict_name
+      # if $dict_to_be_updated == true
+      #   active_dict_name = get_active_dict_name 
+      #   $dict_to_be_updated = false
+      # end
       script_str = "refresh(\"#{html_str}\")";
-      sel_info_dialog.execute_script(script_str);
+      $sel_info_dialog.execute_script(script_str);
     end
+    #$dict_to_be_updated = true
   end
 end
 
 
-class SelectionInfoDialog
+module SelectionInfoDialog
   extend self
   def create_dialog
-    sel_info_dialog = UI::HtmlDialog.new({:dialog_title=>"VG Selection Info",
+    $sel_info_dialog = UI::HtmlDialog.new({:dialog_title=>"VG Selection Info",
       :scrollable=>true,
       :resizable=>true,
       :style=>UI::HtmlDialog::STYLE_DIALOG
     })
     html_file_path = File.join(SILoader::Lib::RP, "web", "component_info.html")
-    sel_info_dialog.set_file(html_file_path)
-    sel_info_dialog.set_size(1000, 500)
-    sel_info_dialog.set_position(0,0)
-    sel_info_dialog.center
-    sel_info_dialog.show
-    
-    sel_info_dialog.add_action_callback("getCompDetails") {|dialog, params|
+    $sel_info_dialog.set_file(html_file_path)
+    $sel_info_dialog.set_size(1000, 500)
+    $sel_info_dialog.set_position(0,0)
+    $sel_info_dialog.center
+  end
+
+  def add_callbacks
+    $sel_info_dialog.add_action_callback("getCompDetails") {|dialog, params|
       #puts "CB : getCompDetails : #{params} : #{Sketchup.active_model.selection[0]}"
     
       resp = ComponentInfo::get_comp_details Sketchup.active_model.selection[0]
@@ -203,24 +210,28 @@ class SelectionInfoDialog
     
       html_str    = ComponentInfo::convert_json_to_html output_json
       script_str = "refresh(\"#{html_str}\")";
-      sel_info_dialog.execute_script(script_str);
+      $sel_info_dialog.execute_script(script_str);
     }
     
-    sel_info_dialog.add_action_callback("getTableData") {|dialog, params|
+    $sel_info_dialog.add_action_callback("getTableData") {|dialog, params|
       #puts "CB : getTableData : #{params}"
       inputs = JSON.parse(params)
       table_html = ComponentInfo::get_table_data inputs
       script_str = "refreshDictData(\"#{table_html}\")";
-      sel_info_dialog.execute_script(script_str);
+      $sel_info_dialog.execute_script(script_str);
     }
     
-    sel_info_dialog.add_action_callback("setActiveMenu"){ |dialog, params|
+    $sel_info_dialog.add_action_callback("setActiveMenu"){ |dialog, params|
       inputs = JSON.parse(params)
-      #puts "Inputs setActiveMenu : #{inputs}"
+      puts "Inputs setActiveMenu : #{inputs}"
       $active_menu_item = inputs["attr_name"]
       script_str = "setActiveMenuItem(\"#{$active_menu_item}\")";
-      sel_info_dialog.execute_script(script_str);
+      $sel_info_dialog.execute_script(script_str);
     }    
+  end
+
+  def show_dialog
+    $sel_info_dialog.show
   end
 end
 
@@ -228,7 +239,7 @@ if SILoader::Lib::TEST_MODE
   time = Time.now
   time_str = "%s:%s" % [time.min, time.sec]
   menu_item = "VG Selection Info #{time_str}"
-  UI.menu('Plugins').add_item(menu_item){ SelectionInfoDialog::create_dialog }
+  UI.menu('Plugins').add_item(menu_item){ SelectionInfoDialog::show_dialog }
 else
-  UI.menu('Plugins').add_item('VG Selection Info'){ SelectionInfoDialog::create_dialog }
+  UI.menu('Plugins').add_item('VG Selection Info'){ SelectionInfoDialog::show_dialog }
 end
