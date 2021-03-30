@@ -1,24 +1,18 @@
-require "sketchup.rb"
-require "extensions.rb"
+require 'sketchup.rb'
+require 'extensions.rb'
 
+module VG_SITool_V1
+  unless file_loaded?(__FILE__)
+    loader_path           = File.join('vg_selection_info', "selection_info_loader.rb")
+    vg_extension_title    = "VG - Selection Info"
 
-current_folder        = File.join(File.dirname(__FILE__))
-core_path 	          = File.join(current_folder, 'vg_selection_info')
+    my_plugin_loader              = SketchupExtension.new(vg_extension_title, loader_path)
+    my_plugin_loader.copyright    = "Copyright 2021 VG"
+    my_plugin_loader.creator      = "Vivek Gnanasekaran"
+    my_plugin_loader.version      = "1.0.0"
+    my_plugin_loader.description  = "Info of the Selected entity."
 
-#------------ Set temp Paths here -------------------------------------
-dev_env = false
-if dev_env
-  #core_path             = 'E:\Extensions\selection_info\vg_selection_info'
+    Sketchup.register_extension my_plugin_loader, true
+    file_loaded(__FILE__)
+  end
 end
-#----------------------------------------------------------------------
-
-loader_path           = File.join(core_path, "selection_info_loader.rb")
-vg_extension_title    = "VG - Selection Info"
-
-my_plugin_loader              = SketchupExtension.new(vg_extension_title, loader_path)
-my_plugin_loader.copyright    = "Copyright 2021 VG"
-my_plugin_loader.creator      = "Vivek Gnanasekaran"
-my_plugin_loader.version      = "1.0.0"
-my_plugin_loader.description  = "Info of the Selected entity."
-
-Sketchup.register_extension my_plugin_loader, true

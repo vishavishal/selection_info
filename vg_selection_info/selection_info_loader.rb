@@ -1,11 +1,17 @@
 #----------------------------------------------------------------------------------
 #  CopyRight : Vivek Gnanasekaran
 #----------------------------------------------------------------------------------
+require_relative 'core/observers.rb' #For loading observer 
 
 module VG_SITool_V1
 
   #--------------- Constants       ----------------------------------------------
-  ROOT_PATH       = File.expand_path('..', __FILE__) unless defined?(ROOT_PATH)
+  
+  # To avoid direct __FILE__ usage bug
+  file = __FILE__.dup
+  file.force_encoding('UTF-8') if file.respond_to?(:force_encoding)
+  ROOT_PATH       = File.dirname(file) unless defined?(ROOT_PATH)
+
   FILE_TYPE_STR   = "/*.rb"
   TEST_MODE       = false
   #------------------------------------------------------------------------------
