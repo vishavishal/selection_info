@@ -38,7 +38,7 @@ module VG_SITool_V1
         input_ent.entities.each{|ent| recurse_internal_entities ent, parent_obj}
       when Sketchup::Face 
         face_name = "Face_%s" % [input_ent.persistent_id.to_s]
-        input_obj[face_name] = input_ent.edges.map{|e| e.persistent_id}
+        input_obj[face_name] = input_ent.edges.map{|e| e}#.persistent_id}
       end
     end
 

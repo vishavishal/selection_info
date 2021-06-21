@@ -40,6 +40,7 @@
         document.getElementById('side_menu_list').innerHTML = input;
       }
       function refreshDictData(input) {
+        console.log("Refresh dict data");
         console.log("DictData is : "+input);
         document.getElementById('dict_tables').innerHTML = input;
       }
@@ -48,13 +49,12 @@
         var attr_name = $('.selected').attr('name');
         var attr_hash = {};
         attr_hash["attr_name"] = attr_name;
-        alert("Attr Hash "+ JSON.stringify(attr_hash));
+        //alert("Attr Hash "+ JSON.stringify(attr_hash));
         query="skp:setActiveMenu@"+JSON.stringify(attr_hash);
 			  window.location.href=query;
       }
-      
       function setActiveMenuItem(name){
-        alert("setActiveMenuItem : "+name);
+        //alert("setActiveMenuItem : "+name);
         console.log('setACtiveMenuItem : '+name);
         var attr_hash = {};
         attr_hash["attr_name"] = name;
@@ -68,6 +68,8 @@
           element.classList.add("selected");
           element.click();
         }
+        
+        
       }
       
       //          ----------- JQuery ---------------------------------
